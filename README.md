@@ -20,12 +20,12 @@ A full-stack application to manage customers and their addresses, built with **N
 Backend
 cd server  
 npm install       # Install dependencies (only first time)
-npm start   
+-node  server.js   
 
 Frontend
 cd ../client
 npm install       # Install dependencies (only first time)
-npm start         # Start React frontend
+-npm start         # Start React frontend
 
 # Project Structure
 
