@@ -4,9 +4,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { Navigate } from "react-router-dom";
 
-import CustomerDetailPage from "./pages/CustomerDetailsPage";
-import CustomerListPage from "./pages/CustomerListPage";
-import CustomerFormPage from "./pages/CustomerFormPage";
+import CustomerDetailPage from "./pages/CustomerDetails/CustomerDetailsPage";
+import CustomerListPage from "./pages/CustomerList/CustomerListPage";
+import CustomerFormPage from "./pages/CustomerForm/CustomerFormPage";
 
 function App() {
   return (

@@ -8,6 +8,7 @@ import "./CustomerDetailPage.css";
 function CustomerDetailPage() {
   const { id } = useParams();
   const [customer, setCustomer] = useState(null);
+  const [addresses, setAddresses] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,6 +17,11 @@ function CustomerDetailPage() {
       .then((res) => res.json())
       .then((data) => setCustomer(data))
       .catch((err) => console.error("Error:", err));
+
+    fetch(`http://localhost:5000/api/customers/${id}/addresses`)
+      .then((res) => res.json())
+      .then((data) => setAddresses(data))
+      .catch((err) => console.error("Error fetching addresses", err));
   }, [id]);
 
   if (!customer) return <p>Loading...</p>;
@@ -33,6 +39,20 @@ function CustomerDetailPage() {
         <p>State: {customer.state}</p>
         <p>Pincode: {customer.pincode}</p>
       </div>
+
+      <h1 className="address-heading">Addreeses</h1>
+      {addresses.length > 0 ? (
+        <ul className="address-box">
+          {addresses.map((addr, index) => (
+            <li key={index}>
+              {addr.street}, {addr.city}, {addr.state} - {addr.pincode}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p> No Addresses</p>
+      )}
+
       <button
         onClick={() => navigate(`/customers/${id}/edit`)}
         className="edit-btn"

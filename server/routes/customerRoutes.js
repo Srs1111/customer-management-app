@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const customerController = require("../controllers/customerController");
+const addressController = require("../controllers/addressController");
 
 router.post("/", customerController.createCustomer);
 router.get("/", customerController.getAllCustomers);
