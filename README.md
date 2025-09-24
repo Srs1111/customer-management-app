@@ -16,7 +16,16 @@ A full-stack application to manage customers and their addresses, built with **N
 - React.js (create-react-app)
 - HTML, CSS, JS
 
+##RUN
+Backend
+cd server  
+npm install       # Install dependencies (only first time)
+npm start   
 
+Frontend
+cd ../client
+npm install       # Install dependencies (only first time)
+npm start         # Start React frontend
 
 # Project Structure
 
