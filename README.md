@@ -16,21 +16,56 @@ A full-stack application to manage customers and their addresses, built with **N
 - React.js (create-react-app)
 - HTML, CSS, JS
 
+##RUN
+Backend
+cd server  
+npm install       # Install dependencies (only first time)
+-node  server.js   
 
+Frontend
+cd ../client
+npm install       # Install dependencies (only first time)
+-npm start         # Start React frontend
 
 # Project Structure
 
 customer-management-app/
 │
-├── client/ # React frontend
-│ ├── public/
-│ ├── src/
-│ └── package.json
+├── client/                     # React frontend
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── pages/
+│   │   │   ├── CustomerForm/
+│   │   │   │   ├── CustomerFormPage.js
+│   │   │   │   └── CustomerFormPage.css
+│   │   │   ├── CustomerList/
+│   │   │   │   ├── CustomerListPage.js
+│   │   │   │   └── CustomerListPage.css
+│   │   │   └── CustomerDetails/
+│   │   │       ├── CustomerDetailsPage.js
+│   │   │       └── CustomerDetailsPage.css
+│   │   ├── App.js
+│   │   ├── index.js
+│   │   └── index.css
+│   └── package.json
 │
-├── models/ # Database setup
-│ └── db.js
-├── controllers/ # Express route handlers
-├── routes/ # API routes
-├── node_modules/
-├── package.json
-└── README.md
+├── server/                     # Node.js backend
+│   ├── controllers/
+│   │   ├── customerController.js
+│   │   └── addressController.js
+│   ├── models/
+│   │   ├── Customer.js
+│   │   └── Address.js
+│   ├── routes/
+│   │   ├── customerRoutes.js
+│   │   └── addressRoutes.js
+│   ├── middleware/
+│   │ 
+│   ├── db.js                   # Database connection (Sequelize)
+│   ├── app.js
+│   └── package.json
+│
+├── .gitignore
+├── README.md
+└── package.json 
