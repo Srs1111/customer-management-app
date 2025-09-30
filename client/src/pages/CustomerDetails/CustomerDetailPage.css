@@ -1,6 +1,7 @@
 .detail-page-container {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
   margin-top: 20px;
   font-family: "Roboto";
@@ -29,7 +30,8 @@
 }
 
 .customer-card {
-  display: inline;
+  display: inline-block;
+  flex-wrap: wrap;
   width: 50%;
   background-image: linear-gradient(to left, #00d4ff, #eeaeca);
   padding: 15px;
@@ -40,10 +42,10 @@
 
 .edit-btn {
   color: #b613a3;
-  padding: 12px 45px;
+  padding: 10px 30px;
   font-weight: bold;
   font-family: "Roboto";
-  font-size: 20px;
+  font-size: 15px;
   background-color: #9198e5;
   margin-top: 25px;
   border-radius: 10px;
@@ -60,4 +62,14 @@ p {
   font-family: "Roboto";
   font-size: 30px;
   text-decoration: underline;
+}
+button.delete-btn {
+  padding: 5px 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  margin: 5px;
+  background-color: #cb5a04;
+  color: #f6f6fa;
+  font-weight: bold;
+  font-family: "Roboto";
 }

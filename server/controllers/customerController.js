@@ -1,19 +1,28 @@
 const db = require("../models/db");
 
 exports.createCustomer = (req, res) => {
-  const { firstName, lastName, phone, email, city, state, pincode } = req.body;
+  const {
+    firstName,
+    lastName,
+    department,
+    phone,
+    email,
+    city,
+    state,
+    pincode,
+  } = req.body;
   if (!firstName || !lastName || !phone) {
     return res.status(400).json({ error: "Require Field missing" });
   }
 
   db.run(
-    `INSERT INTO customers (firstName, lastName, phone, email, city, state, pincode)
-    VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [firstName, lastName, phone, email, city, state, pincode],
+    `INSERT INTO customers (firstName, lastName, department, phone, email, city, state, pincode)
+    VALUES (?, ?, ?, ?, ?, ?, ?,?)`,
+    [firstName, lastName, department, phone, email, city, state, pincode],
 
     function (err) {
       if (err) return res.status(500).json({ error: err.message });
-      res.json({ id: this.lastID, message: "Customer created Succefully" });
+      res.json({ id: this.lastID, message: "Customer created Successfully" });
     }
   );
 };
@@ -54,21 +63,45 @@ exports.getCustomerById = (req, res) => {
     "SELECT * FROM  customers WHERE id = ?",
     [id],
 
-    (err, row) => {
+    (err, customer) => {
       if (err) return res.status(500).json({ error: err.message });
-      if (!row) return res.status(404).json({ error: ":Customer Not Found" });
-      res.json(row);
+      if (!customer)
+        return res.status(404).json({ error: "Customer Not Found" });
+
+      db.all(
+        "SELECT * FROM  addresses WHERE customerId = ?",
+        [id],
+        (err, addresses) => {
+          if (err) {
+            console.error("DB error fetching address", err);
+            return res.status(500).json({ error: err.message });
+          }
+          res.json({
+            ...customer,
+            addresses: addresses || [],
+          });
+        }
+      );
     }
   );
 };
 
 exports.updateCustomer = (req, res) => {
   const { id } = req.params;
-  const { firstName, lastName, email, phone, city, state, pincode } = req.body;
+  const {
+    firstName,
+    lastName,
+    department,
+    email,
+    phone,
+    city,
+    state,
+    pincode,
+  } = req.body;
 
   db.run(
-    `UPDATE customers SET firstName = ?, lastName= ?, email = ?, phone = ?, city = ?, state = ?, pincode = ?  WHERE id  = ?`,
-    [firstName, lastName, email, phone, city, state, pincode, id],
+    `UPDATE customers SET firstName = ?, lastName= ?, email = ?, department = ?, phone = ?, city = ?, state = ?, pincode = ?  WHERE id  = ?`,
+    [firstName, lastName, email, department, phone, city, state, pincode, id],
     function (err) {
       if (err) return res.status(500).json({ error: err.message });
       if (this.changes === 0)
@@ -81,14 +114,18 @@ exports.updateCustomer = (req, res) => {
 exports.deleteCustomer = (req, res) => {
   const { id } = req.params;
 
-  db.run(
-    `DELETE * FROM customers WHERE id =?`,
-    [req.params.id],
-    function (err) {
-      if (err) return res.status(500).json({ error: err.message });
-      if (thgis.change === 0)
+  db.run(`DELETE  FROM addresses WHERE customerId =?`, [id], function (err) {
+    if (err) return res.status(500).json({ error: err.message });
+
+    db.run("DELETE FROM customers WHERE id = ?", [id], function (err2) {
+      if (err2) return res.status(500).json({ err2: message });
+
+      if (this.changes === 0) {
         return res.status(404).json({ error: "Customer Not Found" });
-      res.json({ message: "Customer Deleted Successfully" });
-    }
-  );
+      }
+      res.json({
+        message: "Customer and related addresses deleted Successfully",
+      });
+    });
+  });
 };

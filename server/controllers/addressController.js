@@ -23,7 +23,7 @@ exports.createAddress = (req, res) => {
 
 exports.getAddressByCustomer = (req, res) => {
   db.all(
-    "SELECT * FROM addresses WHERE id =?",
+    "SELECT * FROM addresses WHERE customerId =?",
     [req.params.id],
     (err, rows) => {
       if (err) return res.status(500).json({ err: err.message });

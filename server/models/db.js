@@ -7,6 +7,7 @@ const db = new sqlite3.Database("./customerdb.sqlite", (err) => {
     console.log("Connected to Sqlite database");
   }
 });
+db.run("PRAGMA foreign_keys = ON;");
 const path = require("path");
 console.log("DB Path:", path.resolve("./customerdb.sqlite"));
 
@@ -15,6 +16,7 @@ db.serialize(() => {
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           firstName TEXT NOT NULL,
           lastName TEXT NOT NULL,
+          department TEXT,
           phone TEXT NOT NULL,
           email TEXT UNIQUE,
           city TEXT,
@@ -28,7 +30,7 @@ db.serialize(() => {
     city TEXT,
     state TEXT,
     pincode TEXT,
-    FOREIGN KEY(customerId) REFERENCES customers(id))`);
+    FOREIGN KEY(customerId) REFERENCES customers(id) ON DELETE CASCADE)`);
 });
 
 module.exports = db;

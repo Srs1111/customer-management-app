@@ -13,6 +13,7 @@ function CustomerFormPage() {
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
+    department: "",
     phone: "",
     email: "",
     city: "",
@@ -21,13 +22,11 @@ function CustomerFormPage() {
   });
 
   //Mutltiple addresse state
-  const [addresses, setAddresses] = useState([
-    { street: "", city: "", state: "", pincode: "" },
-  ]);
+  const [addresses, setAddresses] = useState([]);
   const addAddressRow = () => {
     setAddresses((prev) => [
       ...prev,
-      { stree: "", city: "", state: "", pincode: "" },
+      { street: "", city: "", state: "", pincode: "" },
     ]);
   };
 
@@ -77,7 +76,7 @@ function CustomerFormPage() {
     setAddresses(newAddresses);
   };
 
-  //Remove addresse
+  //Remove Addresses
 
   const removeAddresses = (index) => {
     const newAddresses = addresses.filter((_, i) => i !== index);
@@ -141,10 +140,15 @@ function CustomerFormPage() {
           name="lastName"
           value={form.lastName || ""}
           onChange={handleChange}
-          placeholder="last Name"
+          placeholder="Last Name"
           required
         />
-
+        <input
+          name="department"
+          value={form.department || ""}
+          onChange={handleChange}
+          placeholder="Department"
+        />
         <input
           name="phone"
           value={form.phone || ""}
@@ -180,41 +184,42 @@ function CustomerFormPage() {
         />
 
         <h1>Addresses</h1>
-        {addresses.map((address, index) => (
-          <div key={index} className="address-card">
-            <input
-              name="street"
-              value={address.street}
-              onChange={(e) => handleAddressesChange(index, e)}
-              placeholder="Street"
-            />
-            <input
-              name="city"
-              value={address.city}
-              onChange={(e) => handleAddressesChange(index, e)}
-              placeholder="City"
-            />
-            <input
-              name="state"
-              value={address.state}
-              onChange={(e) => handleAddressesChange(index, e)}
-              placeholder="State"
-            />
-            <input
-              name="pincode"
-              value={address.pincode}
-              onChange={(e) => handleAddressesChange(index, e)}
-              placeholder="pincode"
-            />
-            <button
-              className="remove-btn"
-              type="button"
-              onClick={() => removeAddresses(index)}
-            >
-              Remove
-            </button>
-          </div>
-        ))}
+        {addresses.length > 0 &&
+          addresses.map((address, index) => (
+            <div key={index} className="address-card">
+              <input
+                name="street"
+                value={address.street}
+                onChange={(e) => handleAddressesChange(index, e)}
+                placeholder="Street"
+              />
+              <input
+                name="city"
+                value={address.city}
+                onChange={(e) => handleAddressesChange(index, e)}
+                placeholder="City"
+              />
+              <input
+                name="state"
+                value={address.state}
+                onChange={(e) => handleAddressesChange(index, e)}
+                placeholder="State"
+              />
+              <input
+                name="pincode"
+                value={address.pincode}
+                onChange={(e) => handleAddressesChange(index, e)}
+                placeholder="pincode"
+              />
+              <button
+                className="remove-btn"
+                type="button"
+                onClick={() => removeAddresses(index)}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
         <div className="btn-container">
           <button type="button" onClick={addAddressRow} className="another-btn">
             Add Another Address

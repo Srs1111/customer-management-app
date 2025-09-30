@@ -7,24 +7,39 @@ import "./CustomerDetailPage.css";
 
 function CustomerDetailPage() {
   const { id } = useParams();
-  const [customer, setCustomer] = useState(null);
+  const [customer, setCustomer] = useState();
   const [addresses, setAddresses] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!id) return;
+    setAddresses([]);
     fetch(`http://localhost:5000/api/customers/${id}`)
       .then((res) => res.json())
-      .then((data) => setCustomer(data))
-      .catch((err) => console.error("Error:", err));
+      .then((data) => {
+        setCustomer(data);
+        setAddresses(data.addresses || []);
+      })
 
-    fetch(`http://localhost:5000/api/customers/${id}/addresses`)
-      .then((res) => res.json())
-      .then((data) => setAddresses(data))
-      .catch((err) => console.error("Error fetching addresses", err));
+      .catch((err) => console.error("Error:", err));
   }, [id]);
 
   if (!customer) return <p>Loading...</p>;
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/customers/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed Delete");
+      }
+      navigate("/customers");
+    } catch (err) {
+      console.error("Error", err);
+    }
+  };
 
   return (
     <div className="detail-page-container">
@@ -33,6 +48,7 @@ function CustomerDetailPage() {
         <p className="customer-name">
           {customer.firstName} {customer.lastName}
         </p>
+        <p>Department: {customer.department}</p>
         <p>Phone: {customer.phone}</p>
         <p>Email: {customer.email}</p>
         <p>City: {customer.city}</p>
@@ -58,6 +74,9 @@ function CustomerDetailPage() {
         className="edit-btn"
       >
         Edit
+      </button>
+      <button onClick={() => handleDelete(customer.id)} className="delete-btn">
+        Delete Customer
       </button>
     </div>
   );
